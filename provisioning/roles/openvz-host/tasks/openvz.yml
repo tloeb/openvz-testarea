@@ -1,0 +1,72 @@
+---
+  - name: add openvz repository
+    copy:
+      src: openvz.list
+      dest: /etc/apt/sources.list.d/openvz.list
+    become: yes
+    tags: ["stage3"]
+
+  - name: add repo key
+    apt_key:
+      url: http://ftp.openvz.org/debian/archive.key
+      state: present
+    become: yes
+    tags: ["stage3"]
+
+  - name: update apt cache
+    apt:
+      update_cache: yes
+    become: yes
+    tags: ["stage3"]
+
+  - name: get architecture
+    command: "dpkg --print-architecture"
+    register: architecture
+    become: yes
+    tags: ["stage3"]
+
+  - name: install openvz
+    apt:
+      name: "linux-image-openvz-{{ architecture.stdout }}"
+      allow_unauthenticated: yes
+      install_recommends: yes
+    become: yes
+    tags: ["stage3"]
+
+  - name: install openvz
+    shell: "if [ ! -d /vz ] ; then sudo ln -s /var/lib/vz/ /vz ; fi"
+    become: yes
+    tags: ["stage3"]
+
+  - name: create configuration_file
+    copy:
+      src: vznet.conf
+      dest: "/etc/vz/vznet.conf"
+    become: yes
+    tags: ["stage3"]
+
+  - name: GRUB get submenu
+    shell: grep menuentry /boot/grub/grub.cfg | grep submenu | grep -oE "gnulinux[^']+"
+    register: grub_submenu
+    tags: ["stage3"]
+
+  - name: GRUB get openvc entry
+    shell: grep menuentry /boot/grub/grub.cfg | grep openvz | grep -oE "gnulinux(.)+advanced[^']+"
+    register: grub_openvc
+    tags: ["stage3"]
+
+  - name: GRUB change grup defaults
+    lineinfile:
+      path: /etc/default/grub
+      regexp: "^GRUB_DEFAULT"
+      line: "GRUB_DEFAULT='{{ grub_submenu.stdout }}>{{ grub_openvc.stdout }}'"
+    become: yes
+    tags: ["stage3"]
+    register: grub_config
+
+  - name: GRUB change grup defaults
+    command: update-grub
+    become: yes
+    tags: ["stage3"]
+    when: grub_config.changed
+    

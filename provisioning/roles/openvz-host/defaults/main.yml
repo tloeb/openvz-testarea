@@ -1,4 +1,7 @@
 package_list:
   - sysvinit-core
   - sysvinit-utils
-repofile: "/etc/apt/sources.list.d/openvz.list"
+  - vzdump 
+  - ploop
+  - initramfs-tools
+  - dirmngr

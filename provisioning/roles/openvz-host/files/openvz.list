@@ -1,0 +1,3 @@
+deb http://download.openvz.org/debian jessie main
+deb http://download.openvz.org/debian jessie-test main
+deb http://download.openvz.org/debian wheezy main

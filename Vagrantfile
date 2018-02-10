@@ -46,7 +46,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/init.yml"
-    ansible.tags = "stage2"
+    ansible.tags = ["stage2","stage3"]
   end
+
+  config.vm.provision :reload
 
 end
