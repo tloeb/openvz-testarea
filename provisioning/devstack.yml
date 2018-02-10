@@ -1,0 +1,5 @@
+---
+  - hosts: all
+    tasks:
+      - name: test connection
+        debug: msg="hello darkness my old friend"
