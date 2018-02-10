@@ -1,5 +1,4 @@
 ---
-  - hosts: devstack
-    tasks:
-      - name: test connection
-        debug: msg="hello darkness my old friend"
+  - hosts: openvz
+    roles:
+      - openvz-host

@@ -1,0 +1,21 @@
+---
+  - name: install packages for Systemv
+    apt: 
+      name: "{{ item }}"
+    with_items: "{{ package_list }}"
+    become: true
+    tags: ["stage1"]
+
+  - name: remove systemd
+    apt: 
+      name: systemd
+      state: absent
+    become: true
+    tags: ["stage2"]
+
+  - name: disable systemd
+    command: "echo -e 'Package: *systemd*\nPin: release *\nPin-Priority: -1\n' | sudo tee /etc/apt/preferences.d/avoid-systemd"
+    tags: ["stage2"]
+
+
+    

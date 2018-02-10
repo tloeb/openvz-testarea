@@ -6,10 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.define "devstack"
-  config.vm.hostname = "devstack.local"
-  config.vm.box = "OpenVZ/Virtuozzo-7.0"
-  #config.vm.box = "ubuntu/trusty64"
+  config.vm.define "openvz"
+  config.vm.hostname = "openvz.local"
+  config.vm.box = "debian/jessie64"
   config.vm.box_check_update = false
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -37,10 +36,17 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+  # IMPORTANT: We need to seperate the ansible run because during a vagrant provision is no reboot possible
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/init.yml"
+    ansible.tags = "stage1"
   end
+
+  config.vm.provision :reload
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/init.yml"
+    ansible.tags = "stage2"
+  end
+
 end
