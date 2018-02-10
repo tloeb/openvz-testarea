@@ -6,9 +6,10 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.hostname = "devstack"
-  #config.vm.box = "OpenVZ/Virtuozzo-7.0"
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.define "devstack"
+  config.vm.hostname = "devstack.local"
+  config.vm.box = "OpenVZ/Virtuozzo-7.0"
+  #config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = false
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -20,7 +21,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder ".", "/vagrant_data"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
