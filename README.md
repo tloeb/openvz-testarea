@@ -1,4 +1,4 @@
-# Example Project Virtuozzo 7.0
+# Example Project OpenVZ
 This is an example setup and configuration of an virtuozzo host over ansible.
 
 ## Requirements
@@ -18,3 +18,5 @@ vagrant up
 vagrant ssh
 sudo vzlist 
 ```
+
+[![asciicast](https://asciinema.org/a/162204.png)](https://asciinema.org/a/162204)
