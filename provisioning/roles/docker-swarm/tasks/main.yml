@@ -1,0 +1,3 @@
+---
+- include: site.yml
+- include: docker_swarm.yml

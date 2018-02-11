@@ -1,0 +1,30 @@
+---
+  - name: get List of already existing Containers
+    shell: "vzlist -aH -o ctid | sed -e 's/^[ \t]*//'"
+    become: yes
+    register: container_list
+    tags: ["stage4"]
+
+  - include: purge.yml
+    tags: ["purge"]
+
+  - name: create container
+    shell: "vzctl create {{ item.ctid }} --ostemplate {{ item.os }}"
+    become: yes
+    when: item.ctid not in container_list.stdout_lines
+    with_items: "{{ docker_swarm }}"
+    tags: ["stage4"]
+
+  - name: set container configuration
+    shell: "vzctl set {{ item.ctid }} --netif_add eth0 --ipadd {{ item.ip }} --save"
+    become: yes
+    when: item.ctid not in container_list.stdout_lines
+    with_items: "{{ docker_swarm }}"
+    tags: ["stage4"]
+
+  - name: start container
+    shell: "vzctl start {{ item.ctid }}"
+    become: yes
+    when: item.ctid not in container_list.stdout_lines
+    with_items: "{{ docker_swarm }}"
+    tags: ["stage4"]

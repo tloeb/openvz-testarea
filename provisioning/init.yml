@@ -1,4 +1,7 @@
 ---
   - hosts: openvz
+    vars_files: 
+      - ./vars/env.yml
     roles:
       - openvz-host
+      - docker-swarm

@@ -1,0 +1,13 @@
+---
+  - name: purge container
+    shell: "vzctl delete {{ item.ctid }}"
+    become: yes
+    when: item.ctid in container_list.stdout_lines
+    with_items: "{{ docker_swarm }}"
+    tags: ["purge"]
+
+  - name: get List of already existing Containers
+    shell: "vzlist -aH -o ctid | sed -e 's/^[ \t]*//'"
+    become: yes
+    register: container_list
+    tags: ["purge"]
