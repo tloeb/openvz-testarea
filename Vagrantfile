@@ -51,4 +51,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :reload
 
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/init.yml"
+    ansible.tags = ["stage4"]
+    #ansible.tags = ["stage4", "purge"]  If you already provisioned the machine and want to clean it before
+  end
+
 end

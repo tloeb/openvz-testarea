@@ -1,4 +1,11 @@
 ---
+  - name: stop container
+    shell: "vzctl stop {{ item.ctid }}"
+    become: yes
+    when: item.ctid in container_list.stdout_lines
+    with_items: "{{ docker_swarm }}"
+    tags: ["purge"]
+
   - name: purge container
     shell: "vzctl delete {{ item.ctid }}"
     become: yes
