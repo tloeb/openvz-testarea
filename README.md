@@ -16,11 +16,5 @@ vagrant plugin install vagrant-reload
 ```
 vagrant up
 vagrant ssh
-sudo vztmpl-dl --gpg-check --list-remote
-sudo vzctl create 101 --ostemplate ubuntu-14.04-x86-minimal
-sudo vzctl set 101 --ipadd 10.1.2.3 --save
-sudo vzctl set 101 --nameserver 10.0.2.1 --save
-sudo vzctl start 101
-sudo vzlist
+sudo vzlist 
 ```
-

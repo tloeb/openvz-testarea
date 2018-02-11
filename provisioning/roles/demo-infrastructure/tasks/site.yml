@@ -9,7 +9,7 @@
     tags: ["purge"]
 
   - name: create container
-    shell: "vzctl create {{ item.ctid }} --ostemplate {{ item.os }}"
+    shell: "vzctl create {{ item.ctid }} --ostemplate {{ item.os }} --hostname {{ item.name }}"
     become: yes
     when: item.ctid not in container_list.stdout_lines
     with_items: "{{ docker_swarm }}"
