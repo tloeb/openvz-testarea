@@ -4,4 +4,4 @@
       - ./vars/env.yml
     roles:
       - openvz-host
-      - docker-swarm
+      - demo-infrastructure
